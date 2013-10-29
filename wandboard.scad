@@ -101,14 +101,14 @@ module wandboard_support() {
 }
 
 module wandboard_glass() {
-  offset = 10;
+  offset = 0;
   depth=10;
   height=wandboard_height;
   width=wandboard_width;
 
   % translate([-offset, -offset, depth+5]) cube([width+offset*2, height+offset*2, 2]);
-  color("gray") for(x=[-offset/2, width+offset/2]) for(y=[-offset/2, height+offset/2]) {
-    translate([x, y, -25]) cylinder(r=1.5, h=50);
+  color("gray") for(x=[2, width-2]) for(y=[2, height-2]) {
+    translate([x, y, -25]) cylinder(r=1.6, h=50);
   }
 }
 

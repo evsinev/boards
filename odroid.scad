@@ -125,7 +125,7 @@ module odroid_wires_holes() {
 
 module odroid_full() {
   odroid_u2();
-  odroid_supports();
+  // odroid_supports();
   odroid_glass();
   odroid_wires();
 }

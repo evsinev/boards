@@ -1,6 +1,6 @@
 include <odroid.scad>
 include <wandboard.scad>
-include <../xz0032/case/case.scad>
+include <../xz0032/case/base2.scad>
 include <cubieboard.scad>
 include <raspberry.scad>
 include <ssd.scad>
@@ -66,7 +66,8 @@ module glass() {
 
 module lcd1() {
   // translate([0, 90, 0])  rotate([180, 0, 0]) all();
-  lcd_pcb();
+  // lcd_pcb();
+  translate([0, 0, -2]) xz0032_base2();
 }
 
 module label() {
@@ -94,10 +95,10 @@ module label() {
 
 
 module holes() {
-  //translate([100, 100, thick+1]) odroid_wires_holes();
-  // translate([200, 100, thick]) odroid_wires_holes();
+  translate([100, 100, thick+1]) odroid_wires_holes();
+   translate([200, 100, thick]) odroid_wires_holes();
 
-  //translate([300, 100, thick]) odroid_wires_holes();
+  translate([300, 100, thick]) odroid_wires_holes();
 
   //translate([50, 200, thick+20])  wandboard_wires_holes();
 
@@ -107,14 +108,18 @@ module holes() {
 
 }
 
-module glass_and_label_with_holes() {
-  % difference() {
+module glass_with_holes() {
+  difference() {
     glass();
     holes();
   }
 
+}
+
+module label_with_holes() {
+
   difference() {
-    translate([0, 0, 600*$t]) label();
+    translate([0, 0, 0]) label();
     holes();
   }
 
@@ -143,7 +148,8 @@ translate([50, 350, thick+12]) raspberry_hsm();
 
 
 module stand_full() {
-  glass_and_label_with_holes();
+  % glass_with_holes();
+  label_with_holes();
 
   // nginx
   translate([nginx_x, nginx_y+cubieboard_width, thick+10]) rotate([0, 0, 270]) cubieboard_full(); 
@@ -191,4 +197,6 @@ module stand_full() {
 }
 
 stand_full();
+// projection(cut = false)  label_with_holes();
+// projection(cut = true)  glass_with_holes();
 

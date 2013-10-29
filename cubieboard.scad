@@ -54,7 +54,7 @@ module cubieboard() {
 }
 
 module cubieboard_glass() {
-  offset = 10;
+  offset = 0;
   depth=10;
   height=cubieboard_height;
   width=cubieboard_width;
