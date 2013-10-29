@@ -149,10 +149,10 @@ module glass_with_holes() {
 
 module label_with_holes() {
 
-  difference() {
-    translate([0, 0, 0]) label();
-    holes();
-  }
+  //difference() {
+  //  translate([0, 0, 0]) label();
+  //  holes();
+  //}
 
   
 }
