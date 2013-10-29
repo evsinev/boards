@@ -74,17 +74,20 @@ module label() {
     color("LightBlue") translate([0, 0, thick]) cube([stand_width, stand_height, 1]);
     // nginx -> ui
     translate([nginx_proc_x, nginx_proc_y+14,  -thick]) cube([94, 32, 13]);
-    // ui -> sso
-    translate([proc_hsm_x+18, proc_hsm_y-100,  -2]) cube([32, 94, 8]);
+    // proc -> hsm
+    translate([proc_hsm_x-50, proc_hsm_y,  -2]) cube([32, 94, 8]);
     // nginx -> ui
     translate([nginx_ui_x-57, nginx_ui_y+5,  -2]) cube([32, 94, 8]);
-    // proc -> hsm
+    // ui -> db
     translate([ui_x+58, ui_y+20,  -2]) cube([94, 32, 8]);
     // internet -> nginx
     translate([internet_nginx_x+6, internet_nginx_y+13,  -2]) cube([94, 32, 8]);
 
-    // ui - > db
-    //translate([proc_db_x+6, proc_db_y+13,  -2]) cube([94, 32, 8]);
+    // proc - > db
+    translate([proc_hsm_x-50, proc_db_y,  -2]) cube([32, 94, 8]);
+
+    // ui -> sso
+    translate([sso_x, ui_y+20,  -2]) cube([94, 32, 8]);
 
   }
 }
@@ -110,10 +113,10 @@ module glass_and_label_with_holes() {
     holes();
   }
 
-  //difference() {
-  //  translate([0, 0, 600*$t]) label();
-  //  holes();
-  //}
+  difference() {
+    translate([0, 0, 600*$t]) label();
+    holes();
+  }
 
   
 }
@@ -176,7 +179,7 @@ module stand_full() {
   translate([proc_db_x, proc_db_y, lcd_level]) rotate([0,0,90]) lcd1();  
 
   // internet -> nginx
-  translate([internet_nginx_x, internet_nginx_y, lcd_level]) lcd1();  
+  translate([internet_nginx_x+$t*300, internet_nginx_y, lcd_level]) lcd1();  
 
   // sso
   translate([sso_x, sso_y, thick+12])  rotate([0,0,180]) odroid_full();
