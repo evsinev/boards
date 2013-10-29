@@ -16,38 +16,38 @@ stand_height=600;
 nginx_x = 62*4;
 nginx_y = 55*4;
 
-nginx_ui_x = nginx_x+54;
-nginx_ui_y = nginx_y+8;
+nginx_proc_x = nginx_x+54;
+nginx_proc_y = nginx_y+8;
 
-ui_x = nginx_ui_x+lcd_w+3;
-ui_y = nginx_y+10;
+proc_x = nginx_proc_x+lcd_w+3;
+proc_y = nginx_y+10;
 
-ui_sso_x = ui_x-4;
-ui_sso_y = ui_y-4;
+proc_hsm_x = proc_x-4;
+proc_hsm_y = proc_y-4;
 
-sso_x = ui_x;
-sso_y = ui_y-158;
+hsm_x = proc_x;
+hsm_y = proc_y-158;
 
-proc_x = nginx_x;
-proc_y = nginx_y+189;
+ui_x = nginx_x;
+ui_y = nginx_y+189;
 
-nginx_proc_x = nginx_x + 63;
-nginx_proc_y = nginx_y + 95;
+nginx_ui_x = nginx_x + 63;
+nginx_ui_y = nginx_y + 95;
 
-hsm_x = nginx_proc_x+90;
-hsm_y = proc_y+10;
+sso_x = nginx_ui_x+90;
+sso_y = ui_y+10;
 
-proc_hsm_x = proc_x+54;
-proc_hsm_y = proc_y+6;
+ui_sso_x = ui_x+54;
+ui_sso_y = ui_y+6;
 
-ui_db_x=ui_x+54;
-ui_db_y=nginx_ui_y;
+proc_db_x=proc_x+54;
+proc_db_y=nginx_proc_y;
 
 internet_nginx_x=nginx_x-94;
-internet_nginx_y=nginx_ui_y;
+internet_nginx_y=nginx_proc_y;
 
-db_x = ui_db_x+94;
-db_y = ui_db_y+80;
+db_x = proc_db_x+94;
+db_y = proc_db_y+80;
 
 ssd_x = db_x+20;
 ssd_y = db_y-140;
@@ -69,18 +69,18 @@ module label() {
   difference() {
     color("LightBlue") translate([0, 0, thick]) cube([stand_width, stand_height, 1]);
     // nginx -> ui
-    translate([nginx_ui_x, nginx_ui_y+14,  -thick]) cube([94, 32, 13]);
+    translate([nginx_proc_x, nginx_proc_y+14,  -thick]) cube([94, 32, 13]);
     // ui -> sso
-    translate([ui_sso_x+18, ui_sso_y-100,  -2]) cube([32, 94, 8]);
+    translate([proc_hsm_x+18, proc_hsm_y-100,  -2]) cube([32, 94, 8]);
     // nginx -> ui
-    translate([nginx_proc_x-57, nginx_proc_y+5,  -2]) cube([32, 94, 8]);
+    translate([nginx_ui_x-57, nginx_ui_y+5,  -2]) cube([32, 94, 8]);
     // proc -> hsm
-    translate([proc_x+58, proc_y+20,  -2]) cube([94, 32, 8]);
+    translate([ui_x+58, ui_y+20,  -2]) cube([94, 32, 8]);
     // internet -> nginx
     translate([internet_nginx_x+6, internet_nginx_y+13,  -2]) cube([94, 32, 8]);
 
     // ui - > db
-    translate([ui_db_x+6, ui_db_y+13,  -2]) cube([94, 32, 8]);
+    translate([proc_db_x+6, proc_db_y+13,  -2]) cube([94, 32, 8]);
 
   }
 }
@@ -144,34 +144,34 @@ module stand_full() {
   translate([nginx_x, nginx_y+cubieboard_width, thick+10]) rotate([0, 0, 270]) cubieboard_full(); 
   
   // ui
-  // %translate([ui_x, ui_y, thick+100]) cube([odroid_width, odroid_height, 10]);
-  translate([ui_x+odroid_width, ui_y+odroid_height, thick+2]) rotate([0,0, 180]) odroid_full();
+  // %translate([proc_x, proc_y, thick+100]) cube([odroid_width, odroid_height, 10]);
+  translate([proc_x+odroid_width, proc_y+odroid_height, thick+2]) rotate([0,0, 180]) odroid_full();
   
   // nginx -> ui
-  translate([nginx_ui_x, nginx_ui_y, lcd_level]) lcd1();  
+  translate([nginx_proc_x, nginx_proc_y, lcd_level]) lcd1();  
 
   // ui -> sso
-  translate([ui_sso_x, ui_sso_y, lcd_level]) rotate([0,0, 270]) lcd1();  
+  translate([proc_hsm_x, proc_hsm_y, lcd_level]) rotate([0,0, 270]) lcd1();  
 
   // sso
-  // %translate([sso_x, sso_y, thick+100]) cube([odroid_width, odroid_height, 10]);
-  translate([sso_x+odroid_width, sso_y, thick+2]) rotate([0,0, 90]) odroid_full();
+  // %translate([hsm_x, hsm_y, thick+100]) cube([odroid_width, odroid_height, 10]);
+  translate([hsm_x+odroid_width, hsm_y, thick+2]) rotate([0,0, 90]) odroid_full();
   
   // proc 
-  //%translate([proc_x, proc_y, thick+100]) cube([odroid_width, odroid_height, 10]);
-  translate([proc_x+odroid_width, proc_y+odroid_height, thick+2]) rotate([0,0, 180]) odroid_full();
+  //%translate([ui_x, ui_y, thick+100]) cube([odroid_width, odroid_height, 10]);
+  translate([ui_x+odroid_width, ui_y+odroid_height, thick+2]) rotate([0,0, 180]) odroid_full();
 
   // nginx -> proc 
-  translate([nginx_proc_x, nginx_proc_y, lcd_level]) rotate([0,0, 90]) lcd1();  
+  translate([nginx_ui_x, nginx_ui_y, lcd_level]) rotate([0,0, 90]) lcd1();  
   
   // proc -> hsm
-  translate([proc_hsm_x, proc_hsm_y, lcd_level]) rotate([0,0, 0]) lcd1();  
+  translate([ui_sso_x, ui_sso_y, lcd_level]) rotate([0,0, 0]) lcd1();  
 
   // hsm
-  translate([hsm_x, hsm_y, thick+12]) raspberry_hsm(); 
+  translate([sso_x, sso_y, thick+12]) raspberry_hsm(); 
 
   // ui -> db
-  translate([ui_db_x, ui_db_y, lcd_level]) lcd1();  
+  translate([proc_db_x, proc_db_y, lcd_level]) lcd1();  
 
   // internet -> nginx
   translate([internet_nginx_x, internet_nginx_y, lcd_level]) lcd1();  
