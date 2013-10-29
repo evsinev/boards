@@ -53,7 +53,7 @@ module cubieboard() {
 
 }
 
-module cubieboard_glass() {
+module cubieboard_glass(screw_radius) {
   offset = 0;
   depth=10;
   height=cubieboard_height;
@@ -62,14 +62,14 @@ module cubieboard_glass() {
   % translate([-offset, -offset, depth+5]) cube([width+offset*2, height+offset*2, 2]);
 
     color ("gray") for(x=[22, width-3]) for(y=[3, height-3]) {
-         translate([x,y,-15]) cylinder(r=1.5, h=35);
+         translate([x,y,-15]) cylinder(r=screw_radius, h=35);
     }
 
 }
 
 module cubieboard_wires_holes() {
     translate([cubieboard_width+50, 15.5, -15]) cylinder(r=7, h=25);
-    translate([-30, cubieboard_height-5.5, -20]) cylinder(r=7, h=25);
+    cubieboard_glass(2);
 
 }
 
@@ -89,7 +89,7 @@ module cubieboard_wires() {
 
 module cubieboard_full() {
   cubieboard();
-  cubieboard_glass();
+  cubieboard_glass(1.5);
   cubieboard_wires();
 }
 

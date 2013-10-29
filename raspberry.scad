@@ -77,7 +77,7 @@ module smart_reader() {
 
 }
 
-module raspberry_support() {
+module raspberry_support(screw_radius) {
   w = 10;
   h = 2;
   depth=15;
@@ -97,42 +97,45 @@ module raspberry_support() {
   }
 
   // screw 
-  translate([5, 6, -6]) cylinder(r=1.5, h=12);
+  translate([5, 6, -6]) cylinder(r=screw_radius, h=12);
   
 
 }
 
-module raspberry_supports() {
+module raspberry_supports(screw_radius) {
   // top left
-  translate([5, 47, -11.4]) rotate([0,0,180]) raspberry_support();
+  translate([5, 47, -11.4]) rotate([0,0,180]) raspberry_support(screw_radius);
 
   // bottom center
-  translate([53, 5, -11.4]) rotate([0,0,270]) raspberry_support();
+  translate([53, 5, -11.4]) rotate([0,0,270]) raspberry_support(screw_radius);
   // translate([53, 0, 0]) cube([2, 5, 5]);
   
   // center right
-  translate([85-5, 20, -11.4]) rotate([0,0,0]) raspberry_support();
+  translate([85-5, 20, -11.4]) rotate([0,0,0]) raspberry_support(screw_radius);
   //translate([85-5, 20, 0]) cube([5, 2, 5]);
 
   // top center 
-  translate([39, 56-5, -11.4]) rotate([0,0,90]) raspberry_support();
-  translate([37, 56-5, 0]) cube([2, 5, 5]);
+  //translate([39, 56-5, -11.4]) rotate([0,0,90]) raspberry_support(screw_radius);
+  //translate([37, 56-5, 0]) cube([2, 5, 5]);
 
 }
 
-module raspberry_glass() {
+module raspberry_glass(screw_radius) {
   offset = 10;
   % translate([-offset,-offset,16]) cube([85+offset*2, 56+offset*2, 2]);
   
   color("gray") for(x=[offset/-2, 85+offset/2]) for(y=[-offset/2, 56+offset/2])  {
-    translate([x, y, -17]) cylinder(r=1.5, h=40);
+    translate([x, y, -17]) cylinder(r=screw_radius, h=40);
   }
   
 }
 
 module raspberry_wires_holes() {
     translate([raspberry_width+50, 9.5, -23]) cylinder(r=7, h=30);
-    translate([-30, 8, -15]) cylinder(r=7, h=20);
+    
+    raspberry_supports(2);
+    raspberry_glass(2);
+    
 }
 
 module raspberry_wires() {
@@ -144,7 +147,6 @@ module raspberry_wires() {
 
   color("black") {
     translate([-30, 5, 0]) cube([30, 5, 5]);
-    //translate([-30, 8, -15]) cylinder(r=2, h=20);
   }
 }
 
@@ -152,12 +154,12 @@ module raspberry_hsm() {
   raspberry();
   translate([96, 22.5, 7]) smart_reader();
 
-  color("white") raspberry_supports();
-  raspberry_glass();
+  color("white") raspberry_supports(1.5);
+  raspberry_glass(1.5);
   raspberry_wires();
 }
 
 
 
-//raspberry_hsm();
-//raspberry_wires_holes();
+// raspberry_hsm();
+// raspberry_wires_holes();

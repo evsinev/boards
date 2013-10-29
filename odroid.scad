@@ -106,27 +106,27 @@ module odroid_supports() {
 
 module odroid_wires() {
   color("yello") {
-    translate([8, -25, 40]) cube([14, 25, 14]);
-    translate([16, -25, 46]) rotate([90,0,0]) cylinder(r=2, h=25);
-    translate([16, -50, -10])  cylinder(r=2, h=57);
+    translate([38, -25,5]) cube([14, 25, 14]);
+    translate([45, -25, 10]) rotate([90,0,0]) cylinder(r=2, h=25);
+    translate([45, -50, -20])  cylinder(r=2, h=32);
   }
   // power
   color("black") {
-    translate([16, odroid_height, 20]) cube([5, 30,5]);
+    translate([38.5, odroid_height, 30]) cube([5, 30,5]);
     //translate([18, odroid_height+20+10, -10]) cylinder(r=2.5, h=35);
   }
 }
 
 module odroid_wires_holes() {
-    translate([16, -50, -10])  cylinder(r=7, h=57);
-    translate([18, odroid_height+20+10, -10]) cylinder(r=7, h=35);
+    translate([45, -50, -20])  cylinder(r=7, h=57);
+    // translate([18, odroid_height+20+10, -10]) cylinder(r=7, h=35);
   
 }
 
 module odroid_full() {
-  odroid_u2();
+  translate([odroid_width, 0, odroid_depth]) rotate([180, 0, 180]) odroid_u2();
   // odroid_supports();
-  odroid_glass();
+  // odroid_glass();
   odroid_wires();
 }
 

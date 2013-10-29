@@ -100,7 +100,7 @@ module wandboard_support() {
 
 }
 
-module wandboard_glass() {
+module wandboard_glass(screw_radius) {
   offset = 0;
   depth=10;
   height=wandboard_height;
@@ -108,12 +108,14 @@ module wandboard_glass() {
 
   % translate([-offset, -offset, depth+5]) cube([width+offset*2, height+offset*2, 2]);
   color("gray") for(x=[2, width-2]) for(y=[2, height-2]) {
-    translate([x, y, -25]) cylinder(r=1.6, h=50);
+    translate([x, y, -25]) cylinder(r=screw_radius, h=50);
   }
 }
 
 module wandboard_wires_holes() {
-    translate([wandboard_width+50, 47.5, -30]) cylinder(r=7, h=25);
+    translate([wandboard_width+50, 47.5, -30]) cylinder(r=10, h=
+25);
+    wandboard_glass(2);
 }
 
 module wandboard_wires() {
@@ -132,7 +134,7 @@ module wandboard() {
   wandboard_motherboard_top();
   translate([6, 22, 5]) wandboard_module();
   wandboard_support();
-  wandboard_glass();
+  wandboard_glass(1.5);
   wandboard_wires();
 }
 
