@@ -130,13 +130,6 @@ module raspberry_glass(screw_radius) {
   
 }
 
-module raspberry_wires_holes() {
-    translate([raspberry_width+50, 9.5, -23]) cylinder(r=7, h=30);
-    
-    raspberry_supports(2);
-    raspberry_glass(2);
-    
-}
 
 module raspberry_wires() {
   // ethernet
@@ -150,16 +143,35 @@ module raspberry_wires() {
   }
 }
 
-module raspberry_hsm() {
-  raspberry();
-  translate([96, 22.5, 7]) smart_reader();
+module raspberry_hsm(type, screw_radius) {
+  if(type=="model") {
+    raspberry();
+    translate([96, 22.5, 7]) smart_reader();
 
-  color("white") raspberry_supports(1.5);
-  raspberry_glass(1.5);
-  raspberry_wires();
+    color("white") raspberry_supports(screw_radius);
+    raspberry_glass(screw_radius);
+    raspberry_wires();
+
+    translate([raspberry_width+50, 9.5, -23]) cylinder(r=7, h=30);
+    
+    raspberry_supports(screw_radius);
+    raspberry_glass(screw_radius);
+  }
+
+  if(type=="holes") {
+    raspberry_glass(screw_radius);
+  }
+
+  if(type=="footprint") {
+    translate([0,0,-50]) cube([raspberry_width, raspberry_height, 100]);
+  }
+
 }
 
 
 
-// raspberry_hsm();
+// raspberry_hsm("footprint");
+// raspberry_hsm("model", 1.5);
+// raspberry_hsm("holes", 2);
+
 // raspberry_wires_holes();

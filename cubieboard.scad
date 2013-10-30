@@ -67,12 +67,6 @@ module cubieboard_glass(screw_radius) {
 
 }
 
-module cubieboard_wires_holes() {
-    translate([cubieboard_width+50, 15.5, -15]) cylinder(r=7, h=25);
-    cubieboard_glass(2);
-
-}
-
 module cubieboard_wires() {
 
       // ethernet
@@ -87,11 +81,25 @@ module cubieboard_wires() {
 }
 
 
-module cubieboard_full() {
-  cubieboard();
-  cubieboard_glass(1.5);
-  cubieboard_wires();
+module cubieboard_full(type, screw_radius) {
+  if(type=="model") {
+    cubieboard();
+    cubieboard_glass(screw_radius);
+    cubieboard_wires();
+  }
+
+  if(type=="holes") {
+    translate([cubieboard_width+50, 15.5, -15]) cylinder(r=7, h=25);
+    cubieboard_glass(screw_radius);
+  }
+
+  if(type=="footprint") {
+    translate([0,0,-50]) cube([cubieboard_width, cubieboard_height, 100]);
+  }
+
 }
 
-//cubieboard_full();
-//cubieboard_wires_holes();
+//cubieboard_full("footprint");
+//cubieboard_full("model", 1.5);
+//cubieboard_full("holes", 2);
+

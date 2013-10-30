@@ -8,6 +8,8 @@ include <ssd.scad>
 lcd_w=91;
 lcd_h=53;
 
+draw_label=1;
+
 lcd_level=-3.5;
 
 stand_width=800;
@@ -57,22 +59,94 @@ sso_x = sso_ui_x+5;
 sso_y = ui_y+odroid_height;
 
 
-
 thick=4;
+
+module draw_servers(type, screw_radius) {
+
+   
+    // nginx
+  translate([nginx_x, nginx_y+cubieboard_width, thick+10]) rotate([0, 0, 270]) cubieboard_full(type, screw_radius); 
+  
+  // proc
+  translate([proc_x+odroid_width+1, proc_y, thick+1]) rotate([0,0, 90]) odroid_full(type, screw_radius);
+  
+  // nginx -> proc
+  translate([nginx_proc_x, nginx_proc_y, lcd_level]) lcd1(type, screw_radius);  
+
+  // proc -> hsm
+  translate([proc_hsm_x, proc_hsm_y, lcd_level]) rotate([0,0, 90]) lcd1(type, screw_radius);  
+
+  // hsm
+  translate([hsm_x+odroid_width, hsm_y, thick+13]) rotate([0,0, 0]) raspberry_hsm(type, screw_radius);
+  
+  // ui
+  translate([ui_x+odroid_width, ui_y+odroid_height, thick+1]) rotate([0,0, 180]) odroid_full(type, screw_radius);
+
+  // nginx -> ui
+  translate([nginx_ui_x, nginx_ui_y, lcd_level]) rotate([0,0, 90]) lcd1(type, screw_radius);  
+  
+  // ui -> db
+  translate([ui_db_x, ui_db_y, lcd_level]) rotate([0,0, 0]) lcd1(type, screw_radius);  
+
+  // db
+  translate([db_x, db_y, thick+20]) wandboard(type, screw_radius); 
+
+  // ssd
+  translate([ssd_x, ssd_y, thick+30])  ssd(type, screw_radius);
+
+  // proc -> db
+  translate([proc_db_x, proc_db_y, lcd_level]) rotate([0,0,90]) lcd1(type, screw_radius);  
+
+  // internet -> nginx
+  translate([internet_nginx_x, internet_nginx_y, lcd_level]) lcd1(type, screw_radius);  
+
+  // sso
+  translate([sso_x, sso_y, thick+1])  rotate([0,0,180]) odroid_full(type, screw_radius);
+
+  // sso -> ui
+  translate([sso_ui_x, sso_ui_y, lcd_level]) rotate([0,0, 0]) lcd1(type, screw_radius);  
+
+
+}
 
 module glass() {
     cube([stand_width, stand_height, thick]);
 }
 
-module lcd1() {
+module lcd1(type, screw_radius) {
   // translate([0, 90, 0])  rotate([180, 0, 0]) all();
   // lcd_pcb();
-  translate([0, 0, -2]) xz0032_base2();
+  translate([0, 0, -2]) xz0032_base2(type, screw_radius);
 }
 
 module label() {
   difference() {
     color("LightBlue") translate([0, 0, thick]) cube([stand_width, stand_height, 1]);
+    draw_servers("holes", 2);
+    draw_servers("screens", 2);
+  }
+}
+
+module lcd_holes() {
+  translate([outer_width+9, -5.5, 5-2]) rotate([0, 180, 0])  xz0032_screws(2);
+}
+
+
+
+module glass_with_holes() {
+  difference() {
+    glass();
+    draw_servers("holes", 2);
+  }
+
+}
+
+module label_with_holes() {
+  if(draw_label==1) {
+    difference() {
+      translate([0, 0, 0]) label();
+      draw_servers("holes", 2);
+
     // nginx -> proc
     translate([nginx_proc_x, nginx_proc_y+14,  -thick]) cube([94, 32, 13]);
     // proc -> hsm
@@ -90,123 +164,31 @@ module label() {
     // ui -> sso
     translate([sso_x, ui_y+20,  -2]) cube([94, 32, 8]);
 
+    }
   }
-}
-
-module lcd_holes() {
-  translate([outer_width+9, -5.5, 5-2]) rotate([0, 180, 0])  xz0032_screws(2);
-}
-
-module holes() {
-  // proc
-  translate([proc_x+odroid_width+1, proc_y, thick+1]) rotate([0,0, 90]) odroid_wires_holes();
-
-  // ui
-  translate([ui_x+odroid_width, ui_y+odroid_height, thick+1]) rotate([0,0, 180]) odroid_wires_holes();
-
-  // sso
-  translate([sso_x, sso_y, thick+1]) rotate([0,0, 180]) odroid_wires_holes();
-
-  // nginx
-  translate([nginx_x, nginx_y+cubieboard_width, thick+10]) rotate([0, 0, 270]) cubieboard_wires_holes();
-
-  // db
-  translate([db_x, db_y, thick+20]) wandboard_wires_holes();
-
-  // hsm
-  translate([hsm_x+odroid_width, hsm_y, thick+13]) rotate([0,0, 0]) raspberry_wires_holes();
-
-  // sso -> ui
-  translate([sso_ui_x, sso_ui_y, lcd_level]) rotate([0,0, 0]) lcd_holes();  
-
-  // internet -> nginx
-  translate([internet_nginx_x, internet_nginx_y, lcd_level]) lcd_holes();  
-
-  // proc -> db
-  translate([proc_db_x, proc_db_y, lcd_level]) rotate([0,0,90]) lcd_holes();  
-
-  // ui -> db
-  translate([ui_db_x, ui_db_y, lcd_level]) rotate([0,0, 0]) lcd_holes();  
-
-  // nginx -> ui
-  translate([nginx_ui_x, nginx_ui_y, lcd_level]) rotate([0,0, 90]) lcd_holes();  
-
-  // proc -> hsm
-  translate([proc_hsm_x, proc_hsm_y, lcd_level]) rotate([0,0, 90]) lcd_holes();  
-
-  // nginx -> proc
-  translate([nginx_proc_x, nginx_proc_y, lcd_level]) lcd_holes();  
-
-}
-
-module glass_with_holes() {
-  difference() {
-    glass();
-    holes();
-  }
-
-}
-
-module label_with_holes() {
-
-  //difference() {
-  //  translate([0, 0, 0]) label();
-  //  holes();
-  //}
-
   
 }
 
 
 module stand_full() {
   % glass_with_holes();
+  draw_servers("model", 1.5);
   label_with_holes();
-
-  // nginx
-  translate([nginx_x, nginx_y+cubieboard_width, thick+10]) rotate([0, 0, 270]) cubieboard_full(); 
-  
-  // proc
-  translate([proc_x+odroid_width+1, proc_y, thick+1]) rotate([0,0, 90]) odroid_full();
-  
-  // nginx -> proc
-  translate([nginx_proc_x, nginx_proc_y, lcd_level]) lcd1();  
-
-  // proc -> hsm
-  translate([proc_hsm_x, proc_hsm_y, lcd_level]) rotate([0,0, 90]) lcd1();  
-
-  // hsm
-  translate([hsm_x+odroid_width, hsm_y, thick+13]) rotate([0,0, 0]) raspberry_hsm();
-  
-  // ui
-  translate([ui_x+odroid_width, ui_y+odroid_height, thick+1]) rotate([0,0, 180]) odroid_full();
-
-  // nginx -> ui
-  translate([nginx_ui_x, nginx_ui_y, lcd_level]) rotate([0,0, 90]) lcd1();  
-  
-  // ui -> db
-  translate([ui_db_x, ui_db_y, lcd_level]) rotate([0,0, 0]) lcd1();  
-
-  // db
-  translate([db_x, db_y, thick+20]) wandboard(); 
-
-  // ssd
-  translate([ssd_x, ssd_y, thick+30])  ssd();
-
-  // proc -> db
-  translate([proc_db_x, proc_db_y, lcd_level]) rotate([0,0,90]) lcd1();  
-
-  // internet -> nginx
-  translate([internet_nginx_x, internet_nginx_y, lcd_level]) lcd1();  
-
-  // sso
-  translate([sso_x, sso_y, thick+1])  rotate([0,0,180]) odroid_full();
-
-  // sso -> ui
-  translate([sso_ui_x, sso_ui_y, lcd_level]) rotate([0,0, 0]) lcd1();  
-
-
 }
- stand_full();
-// projection(cut = false)  label_with_holes();
-// projection(cut = false)  glass_with_holes();
+
+module footprints() {
+  glass();
+  draw_servers("footprint", 1.5);
+}
+
+//stand_full();
+
+// projection(cut = false) 
+// footprints();
+
+projection(cut = false) 
+label_with_holes($fn=50);
+
+// projection(cut = false)  
+// glass_with_holes($fn=50);
 

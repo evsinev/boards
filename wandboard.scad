@@ -112,31 +112,40 @@ module wandboard_glass(screw_radius) {
   }
 }
 
-module wandboard_wires_holes() {
-    translate([wandboard_width+50, 47.5, -30]) cylinder(r=10, h=
-25);
-    wandboard_glass(2);
-}
-
 module wandboard_wires() {
     // ethernet
-    color("yellow") translate([wandboard_width, 45, -10]) cube([50, 5, 5]);
-    color("yellow") translate([wandboard_width+50, 47.5, -30]) cylinder(r=2, h=25);
+    color("yellow") translate([wandboard_width, 45, -10]) cube([80, 5, 5]);
+    color("yellow") translate([wandboard_width+80, 47.5, -30]) cylinder(r=2, h=25);
 
     // power
-    color("black") translate([wandboard_width, 9, -10]) rotate([0,0,33]) cube([60, 5, 5]);
-    color("black") translate([wandboard_width+50, 42.5, -30]) cylinder(r=2, h=25);
+    color("black") translate([wandboard_width, 9, -10]) rotate([0,0,20]) cube([90, 5, 5]);
+    color("black") translate([wandboard_width+80, 42.5, -30]) cylinder(r=2, h=25);
 
 }
 
-module wandboard() {
-  translate([95, 0, -1]) rotate([180, 0, 180]) wandboard_motherboard_bottom();
-  wandboard_motherboard_top();
-  translate([6, 22, 5]) wandboard_module();
-  wandboard_support();
-  wandboard_glass(1.5);
-  wandboard_wires();
+module wandboard(type, screw_radius) {
+  if(type=="model") {
+    translate([95, 0, -1]) rotate([180, 0, 180]) wandboard_motherboard_bottom();
+    wandboard_motherboard_top();
+    translate([6, 22, 5]) wandboard_module();
+    wandboard_support();
+    wandboard_glass(screw_radius);
+    wandboard_wires();
+  }
+
+  if(type=="holes") {
+    translate([wandboard_width+80, 47.5, -30]) cylinder(r=10, h=
+25);
+    wandboard_glass(screw_radius);
+  }
+
+  if(type=="footprint") {
+    translate([0,0,-50]) cube([wandboard_width, wandboard_height, 100]);
+  }
+
 }
 
-//wandboard();
-//wandboard_wires_holes();
+// wandboard("footprint");
+//  wandboard("model", 1.5);
+// wandboard("holes", 2);
+

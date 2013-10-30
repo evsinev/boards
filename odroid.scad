@@ -128,22 +128,29 @@ module odroid_supports(screw_radius) {
 
 }
 
-module odroid_wires_holes() {
+module odroid_full(type, screw_radius) {
+
+  if(type=="model") {
+    translate([odroid_width, 0, odroid_depth]) rotate([180, 0, 180]) odroid_u2();
+    // odroid_supports();
+    // odroid_glass();
+    odroid_wires();
+    odroid_supports(screw_radius);
+  }
+ 
+  if(type=="holes"){
     translate([45, -50, -20])  cylinder(r=7, h=57);
     // translate([18, odroid_height+20+10, -10]) cylinder(r=7, h=35);
-    odroid_supports(2);
-  
+    odroid_supports(screw_radius);
+  }
+
+  if(type=="footprint"){
+    translate([0, 0, -50]) cube([odroid_width, odroid_height, 100]);
+  }
+
 }
 
 
-module odroid_full() {
-  translate([odroid_width, 0, odroid_depth]) rotate([180, 0, 180]) odroid_u2();
-  // odroid_supports();
-  // odroid_glass();
-  odroid_wires();
-  odroid_supports(1.5);
-}
-
-
-// odroid_full();
-//odroid_wires_holes();
+// odroid_full("footprint");
+// odroid_full("model", 1.5);
+// odroid_full("holes", 2);
