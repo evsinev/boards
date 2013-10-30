@@ -117,31 +117,35 @@ module odroid_wires() {
   }
 }
 
-module odroid_supports(screw_radius) {
+module odroid_supports(screw_radius, mode) {
   offset = 5;
 
   translate([odroid_width/2,-offset,-20]) cylinder(r=screw_radius, h=60);
 
-  translate([odroid_width+offset, odroid_height+offset,-20]) cylinder(r=screw_radius, h=60);
-  
-  translate([-offset-5, odroid_height+1,-20]) cylinder(r=screw_radius, h=60);
+  if(mode=="center") {
+    translate([odroid_width+offset, odroid_height/2,-20]) cylinder(r=screw_radius, h=60);
+  } else {
+    translate([odroid_width+offset, odroid_height+offset,-20]) cylinder(r=screw_radius, h=60);
+  }
+     translate([-offset-5, odroid_height+1,-20]) cylinder(r=screw_radius, h=60);
+
 
 }
 
-module odroid_full(type, screw_radius) {
+module odroid_full(type, screw_radius, mode) {
 
   if(type=="model") {
     translate([odroid_width, 0, odroid_depth]) rotate([180, 0, 180]) odroid_u2();
     // odroid_supports();
     // odroid_glass();
     odroid_wires();
-    odroid_supports(screw_radius);
+    odroid_supports(screw_radius, mode);
   }
  
   if(type=="holes"){
     translate([45, -50, -20])  cylinder(r=7, h=57);
     // translate([18, odroid_height+20+10, -10]) cylinder(r=7, h=35);
-    odroid_supports(screw_radius);
+    odroid_supports(screw_radius, mode);
   }
 
   if(type=="footprint"){

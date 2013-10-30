@@ -116,13 +116,14 @@ module wandboard_glass(screw_radius) {
 }
 
 module wandboard_wires() {
+    off = 40;
     // ethernet
-    color("yellow") translate([wandboard_width, 45, -10]) cube([80, 5, 5]);
-    color("yellow") translate([wandboard_width+80, 47.5, -30]) cylinder(r=2, h=25);
+    color("yellow") translate([wandboard_width, 45, -10]) cube([off, 5, 5]);
+    color("yellow") translate([wandboard_width+off, 47.5, -30]) cylinder(r=2, h=25);
 
     // power
-    color("black") translate([wandboard_width, 9, -10]) rotate([0,0,20]) cube([90, 5, 5]);
-    color("black") translate([wandboard_width+80, 42.5, -30]) cylinder(r=2, h=25);
+    color("black") translate([wandboard_width, 9, -10]) rotate([0,0,33]) cube([60, 5, 5]);
+    color("black") translate([wandboard_width+off, 42.5, -30]) cylinder(r=2, h=25);
 
 }
 
@@ -137,7 +138,7 @@ module wandboard(type, screw_radius) {
   }
 
   if(type=="holes") {
-    translate([wandboard_width+80, 47.5, -30]) cylinder(r=10, h=
+    translate([wandboard_width+40, 47.5, -30]) cylinder(r=10, h=
 25);
     wandboard_screws(screw_radius);
   }

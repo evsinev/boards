@@ -12,11 +12,11 @@ draw_label=1;
 
 lcd_level=-3.5;
 
-stand_width=800;
-stand_height=600;
+stand_width=450;
+stand_height=450;
 
-nginx_x = 62*4;
-nginx_y = 55*4;
+nginx_x = 200;
+nginx_y = 100;
 
 nginx_proc_x = nginx_x+54;
 nginx_proc_y = nginx_y+8;
@@ -49,8 +49,8 @@ internet_nginx_y=nginx_proc_y;
 db_x = nginx_ui_x+85;
 db_y = ui_y-26;
 
-ssd_x = db_x+150;
-ssd_y = db_y + 10;
+ssd_x = db_x+110;
+ssd_y = db_y +31;
 
 sso_ui_x = ui_x - 94;
 sso_ui_y = ui_db_y;
@@ -68,17 +68,11 @@ module draw_servers(type, screw_radius) {
   translate([nginx_x, nginx_y+cubieboard_width, thick+10]) rotate([0, 0, 270]) cubieboard_full(type, screw_radius); 
   
   // proc
-  translate([proc_x+odroid_width+1, proc_y, thick+1]) rotate([0,0, 90]) odroid_full(type, screw_radius);
+  translate([proc_x, proc_y, thick+1]) rotate([0,0, 0]) odroid_full(type, screw_radius, "center");
   
   // nginx -> proc
   translate([nginx_proc_x, nginx_proc_y, lcd_level]) lcd1(type, screw_radius);  
-
-  // proc -> hsm
-  translate([proc_hsm_x, proc_hsm_y, lcd_level]) rotate([0,0, 90]) lcd1(type, screw_radius);  
-
-  // hsm
-  translate([hsm_x+odroid_width, hsm_y, thick+13]) rotate([0,0, 0]) raspberry_hsm(type, screw_radius);
-  
+ 
   // ui
   translate([ui_x+odroid_width, ui_y+odroid_height, thick+1]) rotate([0,0, 180]) odroid_full(type, screw_radius);
 
@@ -89,10 +83,10 @@ module draw_servers(type, screw_radius) {
   translate([ui_db_x, ui_db_y, lcd_level]) rotate([0,0, 0]) lcd1(type, screw_radius);  
 
   // db
-  translate([db_x, db_y, thick+20]) wandboard(type, screw_radius); 
+  translate([db_x+wandboard_width, db_y, thick+20]) rotate([0, 0, 90]) wandboard(type, screw_radius); 
 
   // ssd
-  translate([ssd_x, ssd_y, thick+30])  ssd(type, screw_radius);
+  translate([ssd_x-ssd_width, ssd_y+ssd_height, thick+1])  rotate([0, 0, 270]) ssd(type, screw_radius);
 
   // proc -> db
   translate([proc_db_x, proc_db_y, lcd_level]) rotate([0,0,90]) lcd1(type, screw_radius);  
@@ -145,23 +139,21 @@ module label_with_holes() {
     difference() {
       translate([0, 0, 0]) label();
       draw_servers("holes", 2);
-
     // nginx -> proc
-    translate([nginx_proc_x, nginx_proc_y+14,  -thick]) cube([94, 32, 13]);
-    // proc -> hsm
-    translate([proc_hsm_x-50, proc_hsm_y,  -2]) cube([32, 94, 8]);
+    translate([nginx_proc_x+5, nginx_proc_y+14,  -thick]) cube([89, 32, 13]);
+
     // nginx -> ui
-    translate([nginx_ui_x-50, nginx_ui_y+5,  -2]) cube([32, 94, 8]);
+    translate([nginx_ui_x-50, nginx_ui_y+5,  -2]) cube([32, 90, 8]);
     // ui -> db
-    translate([ui_x+58, ui_y+20,  -2]) cube([94, 32, 8]);
+    translate([ui_x+58, ui_y+20,  -2]) cube([90, 32, 8]);
     // internet -> nginx
-    translate([internet_nginx_x+6, nginx_proc_y+14,  -2]) cube([94, 32, 8]);
+    translate([internet_nginx_x+6, nginx_proc_y+14,  -2]) cube([88, 32, 8]);
 
     // proc - > db
-    translate([proc_hsm_x-50, proc_db_y,  -2]) cube([32, 94, 8]);
+    translate([proc_hsm_x-50, proc_db_y+5,  -2]) cube([32, 89, 8]);
 
     // ui -> sso
-    translate([sso_x, ui_y+20,  -2]) cube([94, 32, 8]);
+    translate([sso_x, ui_y+20,  -2]) cube([89, 32, 8]);
 
     }
   }
@@ -170,6 +162,7 @@ module label_with_holes() {
 
 
 module stand_full() {
+
   % glass_with_holes();
   draw_servers("model", 1.5);
   label_with_holes();
@@ -183,12 +176,12 @@ module footprints() {
   // translate([0,0, 60])  draw_servers("footprint", 1.5);
 }
 
-stand_full();
+ stand_full();
 
 // projection(cut = false) 
 // footprints();
 
-//projection(cut = false) 
+// projection(cut = false) 
 // label_with_holes();
 
 // projection(cut = false)  
