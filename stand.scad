@@ -123,7 +123,6 @@ module label() {
   difference() {
     color("LightBlue") translate([0, 0, thick]) cube([stand_width, stand_height, 1]);
     draw_servers("holes", 2);
-    draw_servers("screens", 2);
   }
 }
 
@@ -177,17 +176,20 @@ module stand_full() {
 }
 
 module footprints() {
-  glass();
-  draw_servers("footprint", 1.5);
+  difference() {
+    glass();
+    draw_servers("footprint", 1.5);
+  }
+  // translate([0,0, 60])  draw_servers("footprint", 1.5);
 }
 
-//stand_full();
+stand_full();
 
 // projection(cut = false) 
 // footprints();
 
-projection(cut = false) 
-label_with_holes($fn=50);
+//projection(cut = false) 
+// label_with_holes();
 
 // projection(cut = false)  
 // glass_with_holes($fn=50);

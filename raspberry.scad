@@ -120,13 +120,18 @@ module raspberry_supports(screw_radius) {
 
 }
 
+module raspberry_screws(screw_radius) {
+  offset = 10;
+  color("gray") for(x=[offset/-2, 85+offset/2]) for(y=[-offset/2, 56+offset/2])  {
+    translate([x, y, -17]) cylinder(r=screw_radius, h=40);
+  }
+ 
+}
+
 module raspberry_glass(screw_radius) {
   offset = 10;
   % translate([-offset,-offset,16]) cube([85+offset*2, 56+offset*2, 2]);
   
-  color("gray") for(x=[offset/-2, 85+offset/2]) for(y=[-offset/2, 56+offset/2])  {
-    translate([x, y, -17]) cylinder(r=screw_radius, h=40);
-  }
   
 }
 
@@ -152,14 +157,16 @@ module raspberry_hsm(type, screw_radius) {
     raspberry_glass(screw_radius);
     raspberry_wires();
 
-    translate([raspberry_width+50, 9.5, -23]) cylinder(r=7, h=30);
     
     raspberry_supports(screw_radius);
     raspberry_glass(screw_radius);
+    raspberry_screws(screw_radius);
   }
 
   if(type=="holes") {
-    raspberry_glass(screw_radius);
+    raspberry_supports(screw_radius);
+    raspberry_screws(screw_radius);
+    translate([raspberry_width+50, 9.5, -23]) cylinder(r=7, h=30);
   }
 
   if(type=="footprint") {
