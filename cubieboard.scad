@@ -93,7 +93,7 @@ module cubieboard_full(type, screw_radius) {
   }
 
   if(type=="holes") {
-    translate([cubieboard_width+50, 15.5, -15]) cylinder(r=7, h=25);
+    translate([cubieboard_width+50, 15.5, -15]) cube(size=[15, 25, 25], center=true);
     cubieboard_screws(screw_radius);
   }
 

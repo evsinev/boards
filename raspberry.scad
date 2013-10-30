@@ -58,7 +58,8 @@ module raspberry() {
 
 }
 
-module smart_reader() {
+module smart_reader(type, screw_radius) {
+  if(type=="model") {
    color([0.15, 0.15, 0.15]) {
      translate([0, 0, 0]) cube([32, 19, 7.5]);
      difference() {
@@ -72,8 +73,11 @@ module smart_reader() {
 
    // card 
    color("white") translate([2  , -19, 0]) cube([85, 54, 1]);
+ }
 
-
+  if(type=="footprint") {
+    translate([2  , -19, -50]) cube([85, 54, 100]);
+  }
 
 }
 

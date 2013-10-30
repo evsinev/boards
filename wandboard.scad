@@ -4,14 +4,16 @@ wandboard_height=95;
 module wandboard_motherboard_bottom() {
   height = 95;
   width = 95;
-  
+
+  offset=3.5;
+    
   difference() {
     color("green") translate([0, 0, -1]) cube([height, width, 1]);
-    translate([2, 2, -2]) cylinder(r=1.5, h=5);
-    translate([height-2, width-2, -2]) cylinder(r=1.5, h=5);
-    translate([height-2, 2, -2]) cylinder(r=1.5, h=5);
-    translate([2, width-2, -2]) cylinder(r=1.5, h=5);
-    translate([width/2-2, 2, -2]) cylinder(r=1.5, h=5);
+    translate([offset, offset, -2]) cylinder(r=1.5, h=5);
+    translate([height-offset, width-offset, -2]) cylinder(r=1.5, h=5);
+    translate([height-offset, offset, -2]) cylinder(r=1.5, h=5);
+    translate([offset, width-offset, -2]) cylinder(r=1.5, h=5);
+    translate([width/2-offset, offset, -2]) cylinder(r=1.5, h=5);
   }
   
   // power
@@ -89,19 +91,21 @@ module wandboard_support() {
   width=95;
   support=30;
   level = 0 - support+5;
+  offset=3.5;
   
   color("gray") {
-    translate([2, 2, level]) cylinder(r=1.5, h=support);
-    translate([height-2, width-2, level]) cylinder(r=1.5, h=support);
-    translate([height-2, 2, level]) cylinder(r=1.5, h=support);
-    translate([2, width-2, level]) cylinder(r=1.5, h=support);
+    translate([offset, offset, level]) cube(size=[2, 2, support*2], center=true);
+    translate([height-offset, width-offset, level]) cube(size=[2, 2, support*2], center=true);
+    translate([height-offset, offset, level]) cube(size=[2, 2, support*2], center=true);
+    translate([offset, width-offset, level]) cube(size=[2, 2, support*2], center=true);
   }  
 
 
 }
 
 module wandboard_screws(screw_radius) {
-  color("gray") for(x=[2, wandboard_width-2]) for(y=[2, wandboard_height-2]) {
+  offset=3.5;
+  color("gray") for(x=[offset, wandboard_width-offset]) for(y=[offset, wandboard_height-offset]) {
     translate([x, y, -25]) cylinder(r=screw_radius, h=50);
   }
 }
@@ -119,11 +123,11 @@ module wandboard_wires() {
     off = 40;
     // ethernet
     color("yellow") translate([wandboard_width, 45, -10]) cube([off, 5, 5]);
-    color("yellow") translate([wandboard_width+off, 47.5, -30]) cylinder(r=2, h=25);
+    color("yellow") translate([wandboard_width+off, 47.5, -30]) cube(size=[4,4,25], center=true);
 
     // power
     color("black") translate([wandboard_width, 9, -10]) rotate([0,0,33]) cube([60, 5, 5]);
-    color("black") translate([wandboard_width+off, 42.5, -30]) cylinder(r=2, h=25);
+    color("black") translate([wandboard_width+off, 42.5, -30]) cube(size=[4,4,25], center=true);
 
 }
 
@@ -138,8 +142,11 @@ module wandboard(type, screw_radius) {
   }
 
   if(type=="holes") {
-    translate([wandboard_width+40, 47.5, -30]) cylinder(r=10, h=
-25);
+    // ethernet hole
+    translate([wandboard_width+40, 47.5, -30]) cube(size=[15, 25, 25], center=true);
+    // sata hole
+    translate([30,wandboard_height-13, -30]) cube(size=[25, 15, 25], center=true);
+
     wandboard_screws(screw_radius);
   }
 

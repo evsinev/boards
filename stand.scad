@@ -8,14 +8,14 @@ include <ssd.scad>
 lcd_w=91;
 lcd_h=53;
 
-draw_label=1;
+draw_label=0;
 
 lcd_level=-3.5;
 
 stand_width=450;
 stand_height=450;
 
-nginx_x = 200;
+nginx_x = 175;
 nginx_y = 100;
 
 nginx_proc_x = nginx_x+54;
@@ -46,10 +46,10 @@ proc_hsm_y = proc_y-94;
 internet_nginx_x=nginx_x-94;
 internet_nginx_y=nginx_proc_y;
 
-db_x = nginx_ui_x+85;
+db_x = nginx_ui_x+89;
 db_y = ui_y-26;
 
-ssd_x = db_x+110;
+ssd_x = db_x+118;
 ssd_y = db_y +31;
 
 sso_ui_x = ui_x - 94;
@@ -99,6 +99,9 @@ module draw_servers(type, screw_radius) {
 
   // sso -> ui
   translate([sso_ui_x, sso_ui_y, lcd_level]) rotate([0,0, 0]) lcd1(type, screw_radius);  
+  
+   // smart reader
+  translate([proc_x+57, proc_y-5, 40]) rotate([0,180,90]) smart_reader(type, screw_radius);
 
 
 }
@@ -166,6 +169,8 @@ module stand_full() {
   % glass_with_holes();
   draw_servers("model", 1.5);
   label_with_holes();
+  translate([proc_x+57, proc_y-5, 40]) rotate([0,180,90]) smart_reader();
+
 }
 
 module footprints() {
