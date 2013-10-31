@@ -8,7 +8,7 @@ include <ssd.scad>
 lcd_w=91;
 lcd_h=53;
 
-draw_label=0;
+draw_label=1;
 
 lcd_level=-3.5;
 
