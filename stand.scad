@@ -4,6 +4,7 @@ include <../xz0032/case/base2.scad>
 include <cubieboard.scad>
 include <raspberry.scad>
 include <ssd.scad>
+include <stand-back.scad>
 
 lcd_w=91;
 lcd_h=53;
@@ -95,7 +96,7 @@ module draw_servers(type, screw_radius) {
   translate([internet_nginx_x, internet_nginx_y, lcd_level]) lcd1(type, screw_radius);  
 
   // sso
-  translate([sso_x, sso_y, thick+1])  rotate([0,0,180]) odroid_full(type, screw_radius);
+  translate([sso_x, sso_y, thick+1])  rotate([0,0,180]) odroid_full(type, screw_radius, "no", -40);
 
   // sso -> ui
   translate([sso_ui_x, sso_ui_y, lcd_level]) rotate([0,0, 0]) lcd1(type, screw_radius);  
@@ -158,11 +159,23 @@ module label_with_holes() {
     // ui -> sso
     translate([sso_x, ui_y+20,  -2]) cube([89, 32, 8]);
 
+    stand_screws();
     }
   }
   
 }
 
+
+module stand_screws() {
+  offset=15;
+  for(x=[offset, stand_width-offset]) for(y=[offset, stand_height-offset]) {
+    translate([x, y, -20]) cylinder(r=2, h=40);
+  }
+}
+
+module back_positioned() {
+  translate([0,0, -back_depth-thick]) back_all(true, true, true);
+}
 
 module stand_full() {
 
@@ -170,7 +183,9 @@ module stand_full() {
   draw_servers("model", 1.5);
   label_with_holes();
   translate([proc_x+57, proc_y-5, 40]) rotate([0,180,90]) smart_reader();
-
+  
+  back_positioned();
+  stand_screws();
 }
 
 module footprints() {
@@ -181,13 +196,14 @@ module footprints() {
   // translate([0,0, 60])  draw_servers("footprint", 1.5);
 }
 
- stand_full();
 
-// projection(cut = false) 
-// footprints();
+// stand_full();
 
-// projection(cut = false) 
-// label_with_holes();
+//projection(cut = false) 
+//  footprints();
+
+projection(cut = false) 
+ label_with_holes();
 
 // projection(cut = false)  
 // glass_with_holes($fn=50);

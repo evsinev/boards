@@ -8,7 +8,7 @@ module cubieboard() {
   difference() {
     color([0.1, 0.1, 0.1]) translate([0, 0, -1]) cube([width, height, 1]);
     color ("yellow") for(x=[22, width-3]) for(y=[3, height-3]) {
-         translate([x,y,-2]) cylinder(r=1.5, h=3);
+         cubieboard_screws(1.5);
     }
   }
 
@@ -54,8 +54,8 @@ module cubieboard() {
 }
 
 module cubieboard_screws(screw_radius) {
-    color ("gray") for(x=[22, cubieboard_width-3]) for(y=[3, cubieboard_height-3]) {
-         translate([x,y,-15]) cylinder(r=screw_radius, h=35);
+    color ("gray") for(x=[cubieboard_width-3 - 73.5, cubieboard_width-3]) for(y=[3, cubieboard_height-3]) {
+        translate([x,y,-15]) cylinder(r=screw_radius, h=35);
     }
 }
 
@@ -74,7 +74,7 @@ module cubieboard_wires() {
 
       // ethernet
     color("yellow") translate([cubieboard_width, 13, 5]) cube([50, 5, 5]);
-    color("yellow") translate([cubieboard_width+50, 15.5, -15]) cylinder(r=2, h=25);
+    color("yellow") translate([cubieboard_width+50, 15.5, 0]) cube(size=[2,2,25], center=true);
 
     // power
     color("black") translate([-30, cubieboard_height-8, 1])  cube([30, 5, 5]);
@@ -103,7 +103,7 @@ module cubieboard_full(type, screw_radius) {
 
 }
 
-//cubieboard_full("footprint");
-// cubieboard_full("model", 1.5);
+// cubieboard_full("footprint");
+//cubieboard_full("model", 1.5);
 // cubieboard_full("holes", 2);
 

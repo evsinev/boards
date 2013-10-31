@@ -32,14 +32,14 @@ module draw_walls(back, left_right, top_bottom) {
 }
 
 module back_support() {
-  % difference() {
+  color("red") difference() {
     cube([support_size, support_size, support_size]);
     translate([10, 10, 10]) cube([support_size, 40, 40]);
   }
 
   off = support_size / 3;
-  translate([off+off/2, off, -50]) cylinder(r=2.5, h=150);
-  translate([off+off/2, off*2, -50]) cylinder(r=2.5, h=150);
+  translate([off, off, -50]) cylinder(r=2.5, h=150);
+  translate([off+off, off*2, -50]) cylinder(r=2.5, h=150);
 
   rotate([90,0,0]) {
     translate([off+off/2, off, -70]) cylinder(r=2.5, h=150);
@@ -94,4 +94,4 @@ module back_projections() {
 // color("lightgray") back_all(true, true, true);
 
 // projection(cut = true) 
- back_projections();
+//  back_projections();

@@ -145,7 +145,7 @@ module wandboard(type, screw_radius) {
     // ethernet hole
     translate([wandboard_width+40, 47.5, -30]) cube(size=[15, 25, 25], center=true);
     // sata hole
-    translate([30,wandboard_height-13, -30]) cube(size=[25, 15, 25], center=true);
+    translate([30,wandboard_height-13, -30]) cube(size=[30, 15, 25], center=true);
 
     wandboard_screws(screw_radius);
   }

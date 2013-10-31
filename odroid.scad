@@ -132,7 +132,7 @@ module odroid_supports(screw_radius, mode) {
 
 }
 
-module odroid_full(type, screw_radius, mode) {
+module odroid_full(type, screw_radius, mode, ether_hole_offset=0) {
 
   if(type=="model") {
     translate([odroid_width, 0, odroid_depth]) rotate([180, 0, 180]) odroid_u2();
@@ -143,7 +143,8 @@ module odroid_full(type, screw_radius, mode) {
   }
  
   if(type=="holes"){
-    translate([45, -50, -20])  cube(size=[25, 15, 57], center=true); 
+  
+    translate([45+ether_hole_offset, -50, -20])  cube(size=[25, 15, 57], center=true); 
     odroid_supports(screw_radius, mode);
   }
 
