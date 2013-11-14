@@ -31,12 +31,7 @@ module draw_walls(back, left_right, top_bottom) {
   // front
 }
 
-module back_support() {
-  color("red") difference() {
-    cube([support_size, support_size, support_size]);
-    translate([10, 10, 10]) cube([support_size, 40, 40]);
-  }
-
+module back_holes2() {
   off = support_size / 3;
   translate([off, off, -50]) cylinder(r=2.5, h=150);
   translate([off+off, off*2, -50]) cylinder(r=2.5, h=150);
@@ -52,8 +47,36 @@ module back_support() {
   }
 }
 
+module light_cube() {
+
+    for(x=[10 : 10 : 50]) {
+       for(y=[10:10:50] ) {
+         translate([x, y,-20]) cylinder(r=3, h=90);
+       }
+    }
+
+ 
+}
+
+module back_support() {
+  t = 2;
+  s = support_size-t*2;
+  color("red") difference() {
+    cube([support_size-10, support_size, support_size]);
+    light_cube();
+    rotate([0,90,0]) translate([-60,0, 0]) light_cube();
+    rotate([90,90,0]) translate([-60,0, -60]) light_cube();
+    translate([t, t, t]) 
+         cube([s+10, s, s]);
+    back_holes2();
+  }
+
+  
+
+}
+
 module back_supports() {
-  translate([back_thick, back_thick, back_thick]) back_support();
+  translate([back_thick, back_thick, back_thick]) back_support(add_y=10);
   translate([back_thick, back_height-support_size-back_thick, back_thick]) back_support();
 
   translate([back_width-back_thick, support_size+back_thick, back_thick]) rotate([0, 0,180 ]) back_support();
@@ -95,3 +118,10 @@ module back_projections() {
 
 // projection(cut = true) 
 //  back_projections();
+
+// back_supports();
+rotate([0, 270, 0]) back_support();
+translate([65, 0, 0]) rotate([0, 270, 0]) back_support();
+translate([65, 65, 0]) rotate([0, 270, 0]) back_support();
+translate([0, -5, 0]) cube([70, 135, 0.25]);
+translate([-65, -5, 0]) cube([125, 70, 0.25]);

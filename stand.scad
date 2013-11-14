@@ -184,7 +184,7 @@ module stand_full() {
   label_with_holes();
   translate([proc_x+57, proc_y-5, 40]) rotate([0,180,90]) smart_reader();
   
-  back_positioned();
+  // back_positioned();
   stand_screws();
 }
 
@@ -197,13 +197,13 @@ module footprints() {
 }
 
 
-// stand_full();
+stand_full();
 
 //projection(cut = false) 
 //  footprints();
 
-projection(cut = false) 
- label_with_holes();
+//projection(cut = false) 
+// label_with_holes();
 
 // projection(cut = false)  
 // glass_with_holes($fn=50);

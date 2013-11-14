@@ -1,3 +1,5 @@
+include <odroid-lambda.scad>
+
 odroid_width = 59;
 odroid_height = 60;
 odroid_depth=57;
@@ -135,11 +137,12 @@ module odroid_supports(screw_radius, mode) {
 module odroid_full(type, screw_radius, mode, ether_hole_offset=0) {
 
   if(type=="model") {
-    translate([odroid_width, 0, odroid_depth]) rotate([180, 0, 180]) odroid_u2();
-    // odroid_supports();
-    // odroid_glass();
-    odroid_wires();
-    odroid_supports(screw_radius, mode);
+    //translate([odroid_width, 0, odroid_depth]) rotate([180, 0, 180]) odroid_u2();
+    //// odroid_supports();
+    //// odroid_glass();
+    //odroid_wires();
+    //odroid_supports(screw_radius, mode);
+    odroid_foot(mode);
   }
  
   if(type=="holes"){
@@ -154,7 +157,35 @@ module odroid_full(type, screw_radius, mode, ether_hole_offset=0) {
 
 }
 
+module odroid_foot(mode) {
+  thick=2;
+  offset=10;
+  // top left
+  // translate([-offset-5, odroid_height+2, 0]) cube([odroid_width/1.2, 5, thick]);
+  // translate([-offset-5, odroid_height+2-offset/2, 0]) cube([offset, offset, thick]);
+
+  difference() {
+    if(mode=="center") {
+       translate([26.5, 28, 0]) poly_path38533(2);
+    } else {
+      translate([26.5, 28, 0]) rotate([180, 180, 0]) poly_path3853(2);
+    }
+     odroid_supports(2, mode);
+
+  }
+
+  
+  difference() {
+    translate([2, 30,0]) cube([odroid_width-4, 10,15]);
+    translate([6, 29,3]) cube([odroid_width-12, 12,20]);
+    translate([-10, 35, 10]) rotate([0, 90, 0]) cylinder(r=2, h=odroid_width*2);
+  }
+}
 
 // odroid_full("footprint");
 // odroid_full("model", 1.5);
+translate([odroid_width+30, 0, 0]) odroid_full("model", 1.5, "center");
+
+// odroid_foot();
+
 // odroid_full("holes", 2);
